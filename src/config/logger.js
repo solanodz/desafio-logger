@@ -3,8 +3,8 @@ import { config } from '../config.js'
 
 const customLevelsOptions = {
     levels: {
-        fatal: 1,
-        error: 0,
+        fatal: 0,
+        error: 1,
         warning: 2,
         info: 3,
         http: 4,
