@@ -11,16 +11,6 @@ import Jwt from 'jsonwebtoken';
 
 const router = Router();
 
-router.get('/loggerTest', (req, res) => {
-    req.logger.fatal('fatal');
-    req.logger.error('error');
-    req.logger.warning('warning');
-    req.logger.info('info');
-    req.logger.http('http');
-    req.logger.debug('debug');
-    res.status(200).send('ok');
-})
-
 router.get("/realTimeProducts", privateRouter, authPolicies(['admin']), passport.authenticate('jwt', { session: false }), (req, res) => {
     res.render("index", { title: "Cargas", style: "style.css" });
 });
@@ -33,7 +23,7 @@ router.get("/", privateRouter, authPolicies(['user']), passport.authenticate('jw
 
     const token = req.signedCookies['accessToken']
 
-    Jwt.verify(token, config.jwtSecret, async (error, payload) => {
+    Jwt.verify(token, config.JwtSecret, async (error, payload) => {
         if (error) res.status(403).json({ message: 'No authorized' });
         req.user = payload
     })

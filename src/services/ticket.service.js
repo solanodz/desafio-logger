@@ -1,5 +1,5 @@
 import Exception from "../utils.js";
-import ticketManager from "../dao/ticket.mongo.dao.js";
+import ticketManager from "../dao/ticketManager.js";
 
 export default class ticketService {
     static async get() {

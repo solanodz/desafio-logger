@@ -4,7 +4,7 @@ import Exception from "../utils.js";
 export default class productController {
     static async get(query = {}) {
         try {
-            const { limit = 10, page = 1, sortField = "price", sortOrder = 1, ...criteria } = query;
+            const { limit = 10, page = 1, sortField = "price", sortOrder, ...criteria } = query;
             const filter = { ...criteria };
             const options = { page: parseInt(page, 10), limit: parseInt(limit, 10) };
 

@@ -20,18 +20,18 @@ function cookieExtractor(req) {
 
 const optsJwt = {
     jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-    secretOrKey: '12345',
+    secretOrKey: config.JwtSecret,
 };
 
 const opts = {
     usernameField: "email",
     passReqToCallback: true,
 };
-/* const githubOpts = {
-    clientID: 'id123',
+const githubOpts = {
+    clientID: config.ClientID,
     clientSecret: config.clientSecret,
     callbackURL: config.callback,
-}; */
+};
 
 
 export const init = () => {
@@ -56,7 +56,7 @@ export const init = () => {
             try {
                 const { password, ...body } = req.body;
                 let rol = "user";
-                email === "admincoder@coder.com" ? (rol = "admin") : (rol = "user");
+                // email === "sdezuasnabar@gmail.com" ? (rol = "admin") : (rol = "user");
 
                 const newUser = await userModel.create({
                     ...req.body,
@@ -104,65 +104,65 @@ export const init = () => {
         })
     );
 
-    /*     passport.use(
-            "github",
-            new GithubStrategy(
-                githubOpts,
-                async (accessToken, refreshToken, profile, done) => {
-                    try {
-                        let email = profile._json.email;
-                        if (!email) {
-                            let data = await fetch(
-                                "https://api.github.com/user/public_emails",
-                                {
-                                    headers: {
-                                        Authorization: `token ${accessToken}`,
-                                    },
-                                }
-                            );
-                            data = await data.json();
-    
-                            const target = data.find(
-                                (item) =>
-                                    item.primary && item.verified && item.visibility === "public"
-                            );
-                            email = target.email;
-                        }
-                        let user = await userModel.findOne({ email });
-                        if (user) {
-                            return done(null, user);
-                        }
-                        user = {
-                            username: profile._json.name,
-                            lastname: "",
-                            password: "",
-                            email: email,
-                            address: {
-                                street: "",
-                                city: "",
-                                state: "",
-                            },
-                            status: "active",
-                            provider: "github",
-                        };
-                        const newUser = await userModel.create(user);
-    
-                        const cartNew = await cartModel.create({ userId: newUser._id });
-    
-                        const uid = newUser._id.toString();
-                        const cartUser = await userModel.updateOne(
-                            { _id: uid },
-                            { $set: { cart: cartNew._id } }
+    passport.use(
+        "github",
+        new GithubStrategy(
+            githubOpts,
+            async (accessToken, refreshToken, profile, done) => {
+                try {
+                    let email = profile._json.email;
+                    if (!email) {
+                        let data = await fetch(
+                            "https://api.github.com/user/public_emails",
+                            {
+                                headers: {
+                                    Authorization: `token ${accessToken}`,
+                                },
+                            }
                         );
-    
-                        done(null, newUser);
-                    } catch (error) {
-                        console.error("Error en la estrategia GitHub:", error);
-                        done(error);
+                        data = await data.json();
+
+                        const target = data.find(
+                            (item) =>
+                                item.primary && item.verified && item.visibility === "public"
+                        );
+                        email = target.email;
                     }
+                    let user = await userModel.findOne({ email });
+                    if (user) {
+                        return done(null, user);
+                    }
+                    user = {
+                        username: profile._json.name,
+                        lastname: "",
+                        password: "",
+                        email: email,
+                        address: {
+                            street: "",
+                            city: "",
+                            state: "",
+                        },
+                        status: "active",
+                        provider: "github",
+                    };
+                    const newUser = await userModel.create(user);
+
+                    const cartNew = await cartModel.create({ userId: newUser._id });
+
+                    const uid = newUser._id.toString();
+                    const cartUser = await userModel.updateOne(
+                        { _id: uid },
+                        { $set: { cart: cartNew._id } }
+                    );
+
+                    done(null, newUser);
+                } catch (error) {
+                    console.error("Error en la estrategia GitHub:", error);
+                    done(error);
                 }
-            )
-        ); */
+            }
+        )
+    );
 
     passport.serializeUser((user, done) => {
         done(null, user._id);

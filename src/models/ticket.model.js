@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const ticketSchema = new Schema({
     code: { type: String },
     purchase_datetime: { type: String },
-    amount: { type: Number },
+    amoun: { type: Number },
     purchaser: { type: String }
 })
 

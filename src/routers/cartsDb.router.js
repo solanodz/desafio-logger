@@ -1,6 +1,8 @@
 import { Router } from "express";
-import cartController from "../controllers/carts.controller.js";
-import ticketController from "../controllers/tickets.controller.js";
+import cartController from "../controllers/cart.controller.js";
+import ticketController from "../controllers/ticket.controller.js";
+import userController from "../controllers/user.controller.js";
+import productController from "../controllers/product.controller.js";
 import { config } from "../config.js";
 import Jwt from "jsonwebtoken";
 
@@ -72,7 +74,7 @@ router.put("/cart/:cid", async (req, res, next) => {
     }
 });
 
-router.put("/cart/:cid/products/:pid", async (req, res, next) => {
+router.put("/carts/:cid/products/:pid", async (req, res, next) => {
     try {
         const { cid, pid } = req.params;
         const { body } = req;
@@ -115,7 +117,7 @@ router.delete("/cart/:cid", async (req, res, next) => {
     }
 });
 
-router.delete("/:cid/product/:pid", async (req, res, next) => {
+router.delete("/cart/:cid/product/:pid", async (req, res, next) => {
     try {
         const { cid, pid } = req.params;
 
@@ -142,7 +144,7 @@ router.delete("/:cid/product/:pid", async (req, res, next) => {
     }
 });
 
-router.post("/:cid/purchase", async (req, res, next) => {
+router.post("/cart/:cid/purchase", async (req, res, next) => {
     try {
         const { body } = req;
         const { cid } = req.params;

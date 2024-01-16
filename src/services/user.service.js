@@ -1,5 +1,5 @@
 
-import userManager from "../dao/user.mongo.dao.js";
+import userManager from "../dao/userManager.js";
 import Exception from "../utils.js";
 import userDto from "../dto/user.dto.js";
 
@@ -51,7 +51,6 @@ export default class userService {
             if (!user) throw new Exception("El usuario no existe", 404);
 
             const criterio = { _id: uid };
-            console.log('criterio service: ', criterio);
             const operation = { $set: data };
 
             await userManager.updateById(criterio, operation);

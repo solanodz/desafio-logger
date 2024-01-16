@@ -1,11 +1,11 @@
 // services/cart.service.js
-import CartMongoDao from "../dao/cart.mongo.dao.js";
+import cartManager from "../dao/cartManagers.js";
 import Exception from "../utils.js";
 
 export default class cartService {
     static async getCarts(query) {
         try {
-            return await CartMongoDao.get(query);
+            return await cartManager.get(query);
         } catch (error) {
             throw new Exception(error.message, error.status);
         }
@@ -13,7 +13,7 @@ export default class cartService {
 
     static async getOneCart(query) {
         try {
-            const cart = await CartMongoDao.getOne(query);
+            const cart = await cartManager.getOne(query);
             if (!cart) throw new Exception("No existe el Carrito", 404);
             return cart;
         } catch (error) {
@@ -23,7 +23,7 @@ export default class cartService {
 
     static async getCartById(cid) {
         try {
-            const cart = await CartMongoDao.getById(cid);
+            const cart = await cartManager.getById(cid);
             if (!cart) throw new Exception("No existe el Carrito", 404);
             return cart;
         } catch (error) {
@@ -38,7 +38,7 @@ export default class cartService {
                 items: [{ pid, quantity }],
             } = cartData;
 
-            const cartExist = await CartMongoDao.getOne({ userId });
+            const cartExist = await cartManager.getOne({ userId });
 
             if (!cartExist) throw new Exception("No existe el Carrito", 404);
 
@@ -49,7 +49,7 @@ export default class cartService {
                 });
 
                 if (existingItem) {
-                    await CartMongoDao.findOneAndUpdate(userId, pid, quantity);
+                    await cartManager.findOneAndUpdate(userId, pid, quantity);
                     console.log("Cantidad actualizada en el carrito");
                     return { message: "Cantidad actualizada en el carrito" };
                 } else {
@@ -59,7 +59,7 @@ export default class cartService {
                     return { message: "Producto agregado al carrito" };
                 }
             } else {
-                return await CartMongoDao.create(cartData);
+                return await cartManager.create(cartData);
             }
         } catch (error) {
             throw new Exception(error.message, error.status);
@@ -68,9 +68,9 @@ export default class cartService {
 
     static async updateCartById(uid, data) {
         try {
-            const cart = await CartMongoDao.getById(uid);
+            const cart = await cartManager.getById(uid);
             if (!cart) throw new Exception("Carrito no encontrado", 401);
-            return await CartMongoDao.updateById(uid, data);
+            return await cartManager.updateById(uid, data);
         } catch (error) {
             throw new Exception(error.message, error.status);
         }
@@ -78,7 +78,7 @@ export default class cartService {
 
     static async findOneAndUpdateCart(userId, pid, data) {
         try {
-            return await CartMongoDao.findOneAndUpdate(userId, pid, data);
+            return await cartManager.findOneAndUpdate(userId, pid, data);
         } catch (error) {
             throw new Exception(error.message, error.status);
         }
@@ -86,9 +86,9 @@ export default class cartService {
 
     static async deleteCartById(cid) {
         try {
-            const cart = await CartMongoDao.getById(cid);
+            const cart = await cartManager.getById(cid);
             if (!cart) throw new Exception("Carrito no encontrado", 401);
-            return await CartMongoDao.deleteById(cid);
+            return await cartManager.deleteById(cid);
         } catch (error) {
             throw new Exception(error.message, error.status);
         }
@@ -96,7 +96,7 @@ export default class cartService {
 
     static async findByIdAndUpdateCart(cid, data) {
         try {
-            return await CartMongoDao.findByIdAndUpdate(cid, data);
+            return await cartManager.findByIdAndUpdate(cid, data);
         } catch (error) {
             throw new Exception(error.message, error.status);
         }
@@ -104,7 +104,7 @@ export default class cartService {
 
     static async deleteOneCart(criterio) {
         try {
-            return await CartMongoDao.deleteOne(criterio);
+            return await cartManager.deleteOne(criterio);
         } catch (error) {
             throw new Exception(error.message, error.status);
         }

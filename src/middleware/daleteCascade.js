@@ -1,5 +1,5 @@
 import cartModel from "../models/cart.model.js";
-import cartController from "../controllers/carts.controller.js";
+import cartController from "../controllers/cart.controller.js";
 
 export const deleteProductCart = async (req, res, next) => {
     const pid = req.params.pid;

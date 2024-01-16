@@ -1,5 +1,5 @@
 // services/product.service.js
-import productManager from "../dao/product.mongo.dao.js";
+import productManager from "../dao/productManager.js";
 import Exception from "../utils.js";
 
 export default class productService {
